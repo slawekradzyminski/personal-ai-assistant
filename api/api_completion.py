@@ -1,7 +1,11 @@
 import openai
 
 
-def chatGPT_api(messages):
+def get_completion(content):
+    messages = [
+        {"role": "user", "content": content}
+    ]
+
     completion = openai.ChatCompletion.create(
         model='gpt-3.5-turbo',
         messages=messages,
@@ -12,4 +16,4 @@ def chatGPT_api(messages):
         presence_penalty=0.0
     )
 
-    return completion.choices[0].message
+    return completion.choices[0].message.content

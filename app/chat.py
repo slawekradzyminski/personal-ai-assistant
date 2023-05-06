@@ -3,7 +3,7 @@ import time
 import numpy as np
 from numpy.linalg import norm
 
-from api.api_completion import chatGPT_api
+from api.api_completion import get_completion
 from api.api_embedding import get_embedding
 from app.config import tokenizer, bcolors
 from app.memory import load_info
@@ -56,10 +56,7 @@ def generate_answer(q, retrieved_indices, info):
                 raise ValueError("Failed to respond.")
         else:
             break
-    messages = [
-        {"role": "user", "content": content}
-    ]
-    return chatGPT_api(messages).content
+    return get_completion(content)
 
 
 def answer(q, info):
