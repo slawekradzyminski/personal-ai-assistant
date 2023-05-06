@@ -4,8 +4,8 @@
 
 This project surpasses the length constraints of using OpenAI Chat-LLMs, such as ChatGPT, enabling you to converse with
 any long document. It expedites comprehension of the content and facilitates the acquisition of valuable insights.
-Compared with ChatPDF, it accommodates various file formats, including PDF, doc, docx, txt, and web URLs. The
-implementation of this project is straightforward to follow, expand, and efficient for integration into other
+Compared with ChatPDF, it accommodates various file formats, including PDF, doc, docx, txt, web URLs, and audio/video.
+The implementation of this project is straightforward to follow, expand, and efficient for integration into other
 applications.
 
 Based on https://github.com/webpilot-ai/ChatLongDoc
@@ -23,13 +23,20 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Local files (pdf, doc and txt is supported)
+### Local files
 
 Remember to replace path to your file :)
 
 ```shell
 export OPEN_API_TOKEN=YOUR_TOKEN
 python3 ./main.py /Users/awesome/testing.pdf
+```
+
+Audio is supported up to 25MB (openAI limitation).
+
+```shell
+export OPEN_API_TOKEN=YOUR_TOKEN
+python3 ./main.py /Users/awesome/audio.mp3
 ```
 
 ### Web URLs

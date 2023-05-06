@@ -1,7 +1,7 @@
 import sys
 
 from app.config import load_openai_api_key
-from app.text_reader import get_text
+from app.input_reader import get_text
 from app.memory import memorize
 from app.chat import chat
 

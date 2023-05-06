@@ -5,9 +5,15 @@ from bs4 import BeautifulSoup
 import fitz
 import docx
 
+from api.api_whisper import get_transcript
+
 dummy_headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 }
+
+
+def process_audio(text_path):
+    return get_transcript(text_path)
 
 
 def process_url(url):
@@ -56,6 +62,8 @@ def get_text(text_path):
         text = process_doc(text_path)
     elif suffix == ".txt":
         text = process_txt(text_path)
+    elif suffix.lower() in [".wav", ".mp3", ".m4a", ".mp4", "mpeg", "mpga", "webm"]:
+        text = process_audio(text_path)
     else:
         raise ValueError("Invalid document path!")
     text = " ".join(text.split())
