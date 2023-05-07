@@ -4,7 +4,7 @@
 
 This project surpasses the length constraints of using OpenAI Chat-LLMs, such as ChatGPT, enabling you to converse with
 any long document. It expedites comprehension of the content and facilitates the acquisition of valuable insights.
-Compared with ChatPDF, it accommodates various file formats, including PDF, doc, docx, txt, web URLs, and audio/video.
+Compared with ChatPDF, it accommodates various file formats, including PDF, doc, docx, txt, web URLs, and audio.
 The implementation of this project is straightforward to follow, expand, and efficient for integration into other
 applications.
 
@@ -32,9 +32,8 @@ export OPEN_API_TOKEN=YOUR_TOKEN
 python3 ./main.py /Users/awesome/testing.pdf
 ```
 
-Audio is supported up to 25MB (openAI limitation).
-
 ```shell
+brew install ffmpeg
 export OPEN_API_TOKEN=YOUR_TOKEN
 python3 ./main.py /Users/awesome/audio.mp3
 ```
