@@ -1,4 +1,5 @@
 from app.input_reader import get_text
+import pytest
 
 
 def test_get_text_url(mocker):
@@ -39,3 +40,10 @@ def test_get_text_audio(mocker):
 
     get_text(test_audio_path)
     mock_process_audio.assert_called_once_with(test_audio_path)
+
+
+def test_get_text_unsupported_file_type():
+    unsupported_file_path = "path/to/unsupported_file.mp4"
+
+    with pytest.raises(ValueError, match="Invalid document path!"):
+        get_text(unsupported_file_path)

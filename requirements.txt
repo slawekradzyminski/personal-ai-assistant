@@ -12,3 +12,4 @@ pydub
 docx
 pytest
 pytest-mock
+sumy

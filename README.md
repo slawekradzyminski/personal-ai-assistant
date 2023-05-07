@@ -23,6 +23,12 @@ pip install -r requirements.txt
 
 ## Usage
 
+Download NLP toolkit
+
+```shell
+python3 ./install_nltk_data.py
+```
+
 ### Local files
 
 Remember to replace path to your file :)
