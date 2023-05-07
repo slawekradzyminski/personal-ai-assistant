@@ -32,9 +32,11 @@ def test_load_info(tmpdir):
 
 def test_memorize_existing_memory(mocker):
     mocker.patch("os.path.exists", return_value=True)
+    store_info_mock = mocker.patch("app.memory.store_info")
 
     memory_path = memorize("test text")
 
+    store_info_mock.assert_not_called()
     assert "memory/" in memory_path
 
 

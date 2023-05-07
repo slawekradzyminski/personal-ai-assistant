@@ -8,30 +8,14 @@ import time
 
 from api.api_completion import get_completion
 from api.api_embedding import get_embedding
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.nlp.tokenizers import Tokenizer
-from sumy.summarizers.text_rank import TextRankSummarizer
 
-
-def is_uninformative(chunk):
-    parser = PlaintextParser.from_string(chunk, Tokenizer("english"))
-    summarizer = TextRankSummarizer()
-
-    # Adjust the sentence count as needed.
-    sentence_count = 2
-    summarized_sentences = summarizer(parser.document, sentence_count)
-    summarized_chunk = " ".join([str(sentence) for sentence in summarized_sentences])
-
-    summarized_length = len(summarized_chunk.split())
-    original_length = len(chunk.split())
-
-    # Adjust the threshold as needed.
-    return summarized_length / original_length < 0.2
+from app.config import tokenizer
 
 
 def process_chunk(chunk, info):
-    if is_uninformative(chunk) < 0.5:
+    if len(tokenizer.encode(chunk)) > len(chunk) * 3:
         print("Skipped an uninformative chunk.")
+        print(chunk)
         return info
 
     summary = get_summary(chunk)
