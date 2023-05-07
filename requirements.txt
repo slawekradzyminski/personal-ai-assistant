@@ -1,7 +1,7 @@
 beautifulsoup4
 jsonlines
 numpy
-openai==0.27.2
+openai
 PyMuPDF
 python_docx
 requests
@@ -9,3 +9,4 @@ tqdm
 validators
 tiktoken
 pydub
+docx
