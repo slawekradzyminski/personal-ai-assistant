@@ -60,7 +60,7 @@ def generate_answer(q, retrieved_indices, info):
 
 
 def answer(q, info):
-    q_embd = get_embedding(q, model="text-embedding-ada-002")
+    q_embd = get_embedding(q)
     retrieved_indices = retrieve(q_embd, info)
     return generate_answer(q, retrieved_indices, info)
 
