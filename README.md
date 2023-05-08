@@ -50,3 +50,14 @@ python3 ./main.py /Users/awesome/audio.mp3
 export OPEN_API_TOKEN=YOUR_TOKEN
 python3 ./main.py https://www.mattprd.com/p/the-complete-beginners-guide-to-autonomous-agents
 ```
+
+### Download and transcript YouTube videos
+
+You need to login to YouTube at first use
+
+```shell
+export OPEN_API_TOKEN=YOUR_TOKEN
+python3 ./main.py https://www.youtube.com/watch?v=bo_efYhYU2A
+```
+
+![](chat.png)

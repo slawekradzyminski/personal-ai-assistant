@@ -12,8 +12,14 @@ from api.api_embedding import get_embedding
 from app.config import tokenizer
 
 
+def is_uninformative(chunk):
+    too_short = len(chunk) < 10
+    worthless = len(tokenizer.encode(chunk)) > len(chunk) * 3
+    return too_short | worthless
+
+
 def process_chunk(chunk, info):
-    if len(tokenizer.encode(chunk)) > len(chunk) * 3:
+    if is_uninformative(chunk):
         print("Skipped an uninformative chunk.")
         print(chunk)
         return info

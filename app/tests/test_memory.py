@@ -7,7 +7,7 @@ def test_process_chunk_uninformative(mocker):
     mocker.patch("app.memory.get_embedding")
     info = []
 
-    process_chunk("a" * 1000, info)
+    process_chunk("abcd", info)
 
     assert len(info) == 0
 

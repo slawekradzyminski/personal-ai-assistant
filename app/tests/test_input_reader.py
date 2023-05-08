@@ -10,6 +10,16 @@ def test_get_text_url(mocker):
     mock_process_url.assert_called_once_with(test_url)
 
 
+def test_get_text_youtube_url(mocker):
+    test_youtube_url = "https://www.youtube.com/watch?v=8OAPLk20epo"
+    mock_download_audio = mocker.patch('app.input_reader.download_audio')
+    mock_process_audio = mocker.patch('app.input_reader.process_audio')
+
+    get_text(test_youtube_url)
+    mock_download_audio.assert_called_once_with(test_youtube_url)
+    mock_process_audio.assert_called_once()
+
+
 def test_get_text_pdf(mocker):
     test_pdf_path = "path/to/test_pdf.pdf"
     mock_process_pdf = mocker.patch('app.input_reader.process_pdf')

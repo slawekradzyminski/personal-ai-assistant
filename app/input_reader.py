@@ -2,6 +2,7 @@ import os
 
 import validators
 
+from app.youtube_url_downloader import is_youtube_url, download_audio
 from processors.audio_processor import process_audio
 from processors.doc_processor import process_doc
 from processors.pdf_processor import process_pdf
@@ -12,7 +13,11 @@ from processors.url_processor import process_url
 def get_text(text_path):
     suffix = os.path.splitext(text_path)[-1]
     if validators.url(text_path):
-        text = process_url(text_path)
+        if is_youtube_url(text_path):
+            audio_path = download_audio(text_path)
+            text = process_audio(audio_path)
+        else:
+            text = process_url(text_path)
     elif suffix == ".pdf":
         text = process_pdf(text_path)
     elif ".doc" in suffix:

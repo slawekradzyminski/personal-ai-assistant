@@ -9,6 +9,7 @@ from api.api_whisper import get_transcript
 
 
 def process_audio(text_path):
+    print('Transcripting the audio file...')
     file_size = os.path.getsize(text_path)
     whisper_api_size_limit = 25 * 1024 * 1024
 
