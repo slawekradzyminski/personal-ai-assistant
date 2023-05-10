@@ -2,6 +2,7 @@ import os
 
 import validators
 
+from app.github_reader import is_github_url, clone_repository, process_repository, remove_repositories
 from app.youtube_url_downloader import is_youtube_url, download_audio
 from processors.audio_processor import process_audio
 from processors.doc_processor import process_doc
@@ -22,6 +23,11 @@ def get_text(text_path):
         if is_youtube_url(text_path):
             audio_path = download_audio(text_path)
             text = process_audio(audio_path)
+        elif is_github_url(text_path):
+            repo_directory = "cloned_repo"
+            clone_repository(text_path, repo_directory)
+            text = process_repository(repo_directory)
+            remove_repositories(repo_directory)
         else:
             text = process_url(text_path)
     else:
