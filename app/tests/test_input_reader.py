@@ -20,6 +20,14 @@ def test_get_text_youtube_url(mocker):
     mock_process_audio.assert_called_once()
 
 
+def test_get_text_epub(mocker):
+    test_epub_path = "path/to/test_epub.epub"
+    mock_process_epub = mocker.patch('app.input_reader.process_epub')
+
+    get_text(test_epub_path)
+    mock_process_epub.assert_called_once_with(test_epub_path)
+
+
 def test_get_text_pdf(mocker):
     test_pdf_path = "path/to/test_pdf.pdf"
     mock_process_pdf = mocker.patch('app.input_reader.process_pdf')

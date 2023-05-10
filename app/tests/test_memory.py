@@ -13,7 +13,7 @@ def test_process_chunk_uninformative(mocker):
 
 
 def test_store_info_too_much_text():
-    text = "word " * 100000
+    text = "word " * 200000
 
     with pytest.raises(ValueError, match="Processing is aborted due to high anticipated costs."):
         store_info(text, "memory/test.json")

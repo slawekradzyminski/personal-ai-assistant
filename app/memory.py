@@ -39,7 +39,7 @@ def process_chunk(chunk, info):
     return info
 
 
-def store_info(text, memory_path, chunk_sz=800, max_memory=100):
+def store_info(text, memory_path, chunk_sz=800, max_memory=150):
     info = []
     text = text.replace("\n", " ").split()
 
