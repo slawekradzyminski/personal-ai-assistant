@@ -12,10 +12,15 @@ def download_audio(yt_url):
 
     output_dir = "downloads"
     file_name = f"{yt.title}-{yt.video_id}.{audio_stream.subtype}"
+    full_file_path = os.path.join(output_dir, file_name)
 
-    audio_stream.download(output_path=output_dir, filename=file_name)
+    if not os.path.exists(full_file_path):
+        audio_stream.download(output_path=output_dir, filename=file_name)
+        print(f'File downloaded: {file_name}')
+    else:
+        print(f'File already exists: {file_name}')
 
-    return os.path.join(output_dir, file_name)
+    return full_file_path
 
 
 def is_youtube_url(url):

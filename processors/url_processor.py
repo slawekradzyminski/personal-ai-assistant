@@ -7,6 +7,7 @@ dummy_headers = {
 
 
 def process_url(url):
+    print('URL detected, downloading & parsing...')
     response = requests.get(url, headers=dummy_headers)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")

@@ -3,7 +3,7 @@ from app.input_reader import get_text
 from app.memory import memorize
 from app.chat import chat
 
-document_path = 'https://www.awesome-testing.com/2023/04/exploring-selenium-bidi-functionality'
+document_path = 'https://www.mattprd.com/p/the-complete-beginners-guide-to-autonomous-agents'
 
 load_openai_api_key()
 

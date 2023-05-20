@@ -5,7 +5,7 @@ import math
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
-from api.api_whisper import get_transcript
+from api.api_whisper import api_get_transcript
 
 
 def process_audio(text_path):
@@ -17,7 +17,7 @@ def process_audio(text_path):
         print('File is bigger than 25MB. Processing in chunks')
         transcript = process_large_audio(text_path)
     else:
-        transcript = get_transcript(text_path)
+        transcript = api_get_transcript(text_path)
 
     return transcript
 
@@ -34,7 +34,7 @@ def process_each_chunk_and_get_full_transcript(chunks, extension):
     for idx, chunk in enumerate(chunks):
         with tempfile.NamedTemporaryFile(delete=True, suffix=f'.{extension}') as temp_file:
             chunk.export(temp_file.name, format=extension)
-            transcript_chunk = get_transcript(temp_file.name)
+            transcript_chunk = api_get_transcript(temp_file.name)
             full_transcript += f" [Chunk {idx + 1}] " + transcript_chunk
 
     return full_transcript

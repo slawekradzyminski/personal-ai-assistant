@@ -6,8 +6,8 @@ import jsonlines
 from tqdm import tqdm
 import time
 
-from api.api_completion import get_completion
-from api.api_embedding import get_embedding
+from actions.embeddings import get_embeddings
+from api.api_completion import api_get_completion
 
 from app.config import tokenizer
 
@@ -25,8 +25,8 @@ def process_chunk(chunk, info):
         return info
 
     summary = get_summary(chunk)
-    embd = get_embedding(chunk)
-    summary_embd = get_embedding(summary)
+    embd = get_embeddings(chunk)
+    summary_embd = get_embeddings(summary)
     item = {
         "id": len(info),
         "text": chunk,
@@ -78,4 +78,4 @@ def memorize(text):
 def get_summary(chunk):
     content = "The following is a passage fragment. Please summarize what information the readers can take away from it:"
     content += "\n" + chunk
-    return get_completion(content)
+    return api_get_completion(content)

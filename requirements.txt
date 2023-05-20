@@ -16,3 +16,7 @@ nltk
 pytube
 ebooklib
 backoff
+opencv-python
+InstructorEmbedding
+torch
+sentence_transformers

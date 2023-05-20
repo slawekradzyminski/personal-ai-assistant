@@ -3,7 +3,7 @@ import backoff
 
 
 @backoff.on_exception(backoff.expo, (openai.error.RateLimitError, openai.error.OpenAIError), max_tries=10)
-def get_completion(content):
+def api_get_completion(content):
     messages = [
         {"role": "user", "content": content}
     ]

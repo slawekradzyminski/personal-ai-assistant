@@ -3,8 +3,8 @@ import time
 import numpy as np
 from numpy.linalg import norm
 
-from api.api_completion import get_completion
-from api.api_embedding import get_embedding
+from actions.embeddings import get_embeddings
+from api.api_completion import api_get_completion
 from app.config import tokenizer, bcolors
 from app.memory import load_info
 
@@ -56,11 +56,11 @@ def generate_answer(q, retrieved_indices, info):
                 raise ValueError("Failed to respond.")
         else:
             break
-    return get_completion(content)
+    return api_get_completion(content)
 
 
 def answer(q, info):
-    q_embd = get_embedding(q)
+    q_embd = get_embeddings(q)
     retrieved_indices = retrieve(q_embd, info)
     return generate_answer(q, retrieved_indices, info)
 
