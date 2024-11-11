@@ -2,20 +2,20 @@ import yt_dlp
 import re
 import os
 
+output_template = "downloads/%(title)s-%(id)s.%(ext)s"
+ydl_opts = {
+    "format": "m4a/bestaudio/best",
+    "postprocessors": [
+        {
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "m4a",
+        }
+    ],
+    "outtmpl": output_template,
+}
+
 
 def download_audio(yt_url):
-    output_template = "downloads/%(title)s-%(id)s.%(ext)s"
-    ydl_opts = {
-        "format": "m4a/bestaudio/best",
-        "postprocessors": [
-            {
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "m4a",
-            }
-        ],
-        "outtmpl": output_template,
-    }
-
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(yt_url, download=False)

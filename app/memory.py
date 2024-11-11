@@ -13,9 +13,19 @@ from app.config import tokenizer
 
 
 def is_uninformative(chunk):
+    if not chunk or chunk.isspace():
+        return True
+        
+    chunk = chunk.strip()
     too_short = len(chunk) < 10
-    worthless = len(tokenizer.encode(chunk)) > len(chunk) * 3
-    return too_short | worthless
+    
+    encoded_tokens = tokenizer.encode(chunk)
+    encoded_length = len(encoded_tokens)
+    char_length = len(chunk)
+    
+    worthless = encoded_length >= (char_length * 2)
+    
+    return too_short or worthless
 
 
 def process_chunk(chunk, info):
