@@ -12,3 +12,5 @@
 !requirements.txt
 testing.ipynb
 downloads
+.env
+.DS_Store
