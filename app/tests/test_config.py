@@ -16,7 +16,7 @@ def test_load_openai_api_key_missing(monkeypatch):
     # given
     monkeypatch.delenv('OPENAI_API_KEY', raising=False)
     monkeypatch.setattr('dotenv.load_dotenv', lambda: None)
-    monkeypatch.setattr('os.getenv', lambda x: None)
+    monkeypatch.setattr('os.getenv', lambda key, default=None: None)
     
     # when
     with pytest.raises(ValueError) as exc_info:

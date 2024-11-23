@@ -1,4 +1,4 @@
-from app.input_reader import get_text
+from app.input_reader import _is_youtube_url, get_text
 import pytest
 
 
@@ -65,3 +65,25 @@ def test_get_text_unsupported_file_type():
 
     with pytest.raises(ValueError, match="Invalid document path!"):
         get_text(unsupported_file_path)
+
+
+def test_is_youtube_url():
+    valid_urls = [
+        "https://www.youtube.com/watch?v=8OAPLk20epo",
+        "http://youtube.com/watch?v=8OAPLk20epo",
+        "https://youtu.be/8OAPLk20epo",
+        "https://m.youtube.com/watch?v=8OAPLk20epo",
+        "https://youtube.com/embed/8OAPLk20epo"
+    ]
+
+    invalid_urls = [
+        "https://www.example.com/watch?v=8OAPLk20epo",
+        "https://www.youtubee.com/watch?v=8OAPLk20epo",
+        "https://www.youtu.be.com/watch?v=8OAPLk20epo"
+    ]
+
+    for url in valid_urls:
+        assert _is_youtube_url(url), f"URL should be valid: {url}"
+
+    for url in invalid_urls:
+        assert not _is_youtube_url(url), f"URL should be invalid: {url}"
