@@ -1,39 +1,62 @@
 import yt_dlp
 import re
 import os
+import re
+from typing import Optional
+from yt_dlp import YoutubeDL
 
-output_template = "downloads/%(title)s-%(id)s.%(ext)s"
-ydl_opts = {
-    "format": "m4a/bestaudio/best",
-    "postprocessors": [
-        {
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "m4a",
-        }
-    ],
-    "outtmpl": output_template,
-}
-
-
-def download_audio(yt_url):
+def download_audio(yt_url: str, output_dir: str = "downloads") -> Optional[str]:
+    """
+    Download audio from a YouTube video URL
+    
+    Args:
+        yt_url: YouTube video URL
+        output_dir: Directory to save downloaded files (default: "downloads")
+        
+    Returns:
+        Path to downloaded file or None if download fails
+    """
     try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(yt_url, download=False)
-            filename = ydl.prepare_filename(info)
-            final_path = os.path.splitext(filename)[0] + ".m4a"
-            ydl.download([yt_url])
+        # Create output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Configure yt-dlp options
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'outtmpl': os.path.join(output_dir, '%(title)s-%(id)s.%(ext)s'),
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+            }],
+            'progress_hooks': [lambda d: print(f'Downloading... {d["_percent_str"]}' if d["status"] == "downloading" else "")],
+        }
 
-            return final_path
+        # Download the audio
+        with YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(yt_url, download=True)
+            # Get the downloaded file path
+            file_path = os.path.join(
+                output_dir,
+                f"{info['title']}-{info['id']}.mp3"
+            )
+            print(f'Download completed: {os.path.basename(file_path)}')
+            return file_path
 
     except Exception as e:
-        print(f"Error downloading video: {str(e)}")
-        raise
+        print(f"An error occurred: {str(e)}")
+        return None
 
-
-def is_youtube_url(url):
+def is_youtube_url(url: str) -> bool:
+    """
+    Check if URL is a valid YouTube URL
+    
+    Args:
+        url: URL to check
+        
+    Returns:
+        True if valid YouTube URL, False otherwise
+    """
     youtube_pattern = re.compile(
-        r"(https?://)?(www\.)?"
-        r"(youtube|youtu|youtube-nocookie)\.(com|be)/"
-        r"(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})"
+        r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$'
     )
     return bool(youtube_pattern.match(url))

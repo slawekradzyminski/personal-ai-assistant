@@ -1,6 +1,8 @@
 .ipynb_checkpoints/*
 *.pyc
-.idea/*
+.idea
+.vscode
+.venv/
 *.txt
 *.json
 *.doc
@@ -13,4 +15,3 @@
 testing.ipynb
 downloads
 .env
-.DS_Store

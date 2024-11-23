@@ -4,7 +4,7 @@
 
 Please execute the following command in the terminal to install the required dependencies:
 
-Python>=3.8
+Python>=3.12.3
 
 ```shell
 pip install -r requirements.txt
