@@ -1,6 +1,10 @@
 from app.input_reader import _is_youtube_url, get_text
 import pytest
 
+@pytest.fixture(autouse=True)
+def mock_openai_api_key(monkeypatch):
+    monkeypatch.setenv('OPENAI_API_KEY', 'test-key')
+
 
 def test_get_text_url(mocker):
     test_url = "https://www.example.com"
