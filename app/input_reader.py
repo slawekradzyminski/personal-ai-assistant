@@ -3,22 +3,18 @@ import re
 import validators
 
 from app.youtube_url_downloader import download_audio
-from processors.audio_processor import process_audio
-from processors.doc_processor import process_doc
-from processors.epub_processor import process_epub
-from processors.pdf_processor import process_pdf
-from processors.txt_processor import process_txt
-from processors.url_processor import process_url
+from modals.audio_processor import process_audio
+from modals.doc_processor import process_doc
+from modals.epub_processor import process_epub
+from modals.pdf_processor import process_pdf
+from modals.txt_processor import process_txt
+from modals.url_processor import process_url
 
-def get_text(text_path):
-    suffix = os.path.splitext(text_path)[-1].lower()
+def extract_text(path):
+    suffix = os.path.splitext(path)[-1].lower()
 
-    if validators.url(text_path):
-        if _is_youtube_url(text_path):
-            audio_path = download_audio(text_path)
-            text = process_audio(audio_path)
-        else:
-            text = process_url(text_path)
+    if validators.url(path):
+        text = _process_url_input(path)
     else:
         process_map = {
             ".epub": process_epub,
@@ -32,10 +28,16 @@ def get_text(text_path):
         }
 
         processor = process_map.get(suffix, _unsupported_file_type)
-        text = processor(text_path)
+        text = processor(path)
 
     text = " ".join(text.split())
     return text
+
+def _process_url_input(url: str) -> str:
+    if _is_youtube_url(url):
+        audio_path = download_audio(url)
+        return process_audio(audio_path)
+    return process_url(url)
 
 def _is_youtube_url(url: str) -> bool:
     youtube_pattern = re.compile(

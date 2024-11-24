@@ -1,8 +1,8 @@
 import docx
 
 
-def process_doc(text_path):
-    doc = docx.Document(text_path)
+def process_doc(path):
+    doc = docx.Document(path)
     full_text = []
     for para in doc.paragraphs:
         full_text.append(para.text)

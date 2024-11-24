@@ -1,10 +1,10 @@
 import fitz
 
 
-def process_pdf(text_path):
+def process_pdf(path):
     full_text = ""
     num_pages = 0
-    with fitz.open(text_path) as doc:
+    with fitz.open(path) as doc:
         for page in doc:
             num_pages += 1
             text = page.get_text()

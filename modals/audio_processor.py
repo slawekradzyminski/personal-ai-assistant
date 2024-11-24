@@ -8,27 +8,27 @@ from pydub.silence import split_on_silence
 from api.api_whisper import api_get_transcript
 
 
-def process_audio(text_path):
+def process_audio(path):
     print('Transcripting the audio file...')
     
-    if not os.path.exists(text_path):
-        raise FileNotFoundError(f"Audio file not found: {text_path}")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Audio file not found: {path}")
         
-    file_size = os.path.getsize(text_path)
+    file_size = os.path.getsize(path)
     whisper_api_size_limit = 25 * 1024 * 1024
 
     if file_size > whisper_api_size_limit:
         print('File is bigger than 25MB. Processing in chunks')
-        transcript = process_large_audio(text_path)
+        transcript = process_large_audio(path)
     else:
-        transcript = api_get_transcript(text_path)
+        transcript = api_get_transcript(path)
 
     return transcript
 
 
-def process_large_audio(text_path):
-    extension = get_extension(text_path)
-    sound = AudioSegment.from_file(text_path, format=extension)
+def process_large_audio(path):
+    extension = get_extension(path)
+    sound = AudioSegment.from_file(path, format=extension)
     chunks = split_audio_into_chunks(sound)
     return process_each_chunk_and_get_full_transcript(chunks, extension)
 
@@ -71,5 +71,5 @@ def split_audio_into_chunks(sound):
     return output_chunks
 
 
-def get_extension(text_path):
-    return os.path.splitext(text_path)[1][1:]
+def get_extension(path):
+    return os.path.splitext(path)[1][1:]

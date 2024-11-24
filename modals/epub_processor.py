@@ -4,18 +4,18 @@ from bs4 import BeautifulSoup
 from ebooklib import epub
 
 
-def process_epub(epub_path):
-    if not os.path.exists(epub_path):
-        raise FileNotFoundError(f"File not found: {epub_path}")
+def process_epub(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
 
-    chapters = epub2thtml(epub_path)
+    chapters = epub2thtml(path)
     text = thtml2ttext(chapters)
     delimiter = " "
     return delimiter.join(text)
 
 
-def epub2thtml(epub_path):
-    book = epub.read_epub(epub_path)
+def epub2thtml(path):
+    book = epub.read_epub(path)
     chapters = []
     for item in book.get_items():
         if item.get_type() == ebooklib.ITEM_DOCUMENT:

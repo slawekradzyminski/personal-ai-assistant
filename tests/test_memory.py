@@ -1,30 +1,13 @@
-import pytest
 from unittest.mock import mock_open, patch
 import json
 
 from app.memory import (
-    is_uninformative,
     process_chunk,
-    store_info,
     load_info,
     memorize,
-    get_summary
+    get_summary,
+    store_info
 )
-
-def test_is_uninformative():
-    # given
-    short_chunk = "hi"
-    normal_chunk = "This is a normal length chunk of text"
-    special_chars = "⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘"
-    empty_chunk = ""
-    whitespace_chunk = "   "
-    
-    # when/then
-    assert is_uninformative(short_chunk) == True  # Too short
-    assert is_uninformative(normal_chunk) == False  # Good length, normal text
-    assert is_uninformative(special_chars) == True  # High token/char ratio
-    assert is_uninformative(empty_chunk) == True  # Empty is uninformative
-    assert is_uninformative(whitespace_chunk) == True  # Just whitespace is uninformative
 
 @patch('app.memory.get_embeddings')
 @patch('app.memory.get_summary')
@@ -44,16 +27,6 @@ def test_process_chunk(mock_get_summary, mock_get_embeddings):
     assert result[0]["summary"] == "Test summary"
     assert result[0]["embd"] == [0.1, 0.2, 0.3]
     assert result[0]["id"] == 0
-
-def test_store_info_max_memory_exceeded():
-    # given
-    long_text = "word " * 1000
-    memory_path = "test_memory.json"
-    max_memory = 1
-
-    # when/then
-    with pytest.raises(ValueError, match="Processing is aborted due to high anticipated costs."):
-        store_info(long_text, memory_path, chunk_sz=10, max_memory=max_memory)
 
 def test_load_info():
     # given
@@ -112,4 +85,21 @@ def test_get_summary(mock_api_get_completion):
     # then
     assert result == expected_summary
     mock_api_get_completion.assert_called_once()
+
+@patch('app.memory.process_chunk')
+@patch('jsonlines.open')
+@patch('time.sleep')
+def test_store_info(mock_sleep, mock_jsonlines_open, mock_process_chunk):
+    # given
+    chunks = ["chunk1", "chunk2"]
+    mock_process_chunk.side_effect = lambda chunk, info: info + [{"processed": chunk}]
+    mock_file = mock_jsonlines_open.return_value.__enter__.return_value
+    
+    # when
+    store_info(chunks, "test_path.json")
+    
+    #then
+    assert mock_process_chunk.call_count == 2
+    assert mock_sleep.call_count == 2
+    mock_file.write.assert_called_once_with([{"processed": "chunk1"}, {"processed": "chunk2"}])
 
