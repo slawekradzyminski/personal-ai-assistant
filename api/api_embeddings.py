@@ -13,10 +13,17 @@ def api_get_embeddings(text):
     
     text = text.replace("\n", " ").strip()
     
-    response = client.embeddings.create(
-        input=[text],
-        model=model
-    )
+    request_data = {
+        'model': model,
+        'input': [text]
+    }
     
-    embedding = response.data[0].embedding
-    return embedding
+    try:
+        response = client.embeddings.create(**request_data)
+        embedding = response.data[0].embedding
+        OpenAIClient.log_request('embeddings', request_data, f"Generated embedding vector of length {len(embedding)}")
+        return embedding
+        
+    except Exception as e:
+        OpenAIClient.log_request('embeddings', request_data, None, e)
+        raise

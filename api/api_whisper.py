@@ -15,6 +15,13 @@ def api_get_transcript(audio_path):
     client = OpenAIClient.get_client()
     
     try:
+        request_data = {
+            'model': 'whisper-1',
+            'file': os.path.basename(audio_path),
+            'response_format': 'text',
+            'temperature': 0.2
+        }
+        
         with open(audio_path, 'rb') as f:
             response = client.audio.transcriptions.create(
                 file=f,
@@ -25,8 +32,10 @@ def api_get_transcript(audio_path):
             
         if not response:
             raise ValueError("Empty response from Whisper API")
-            
+        
+        OpenAIClient.log_request('whisper/transcriptions', request_data, response)    
         return response
             
     except Exception as e:
+        OpenAIClient.log_request('whisper/transcriptions', request_data, None, e)
         raise RuntimeError(f"Transcription failed: {str(e)}")
