@@ -21,7 +21,7 @@ Before running the application, you need to set up your environment variables:
 Example `.env` configuration:
 ```
 USE_OPENAI_EMBEDDINGS=false
-OPENAI_API_KEY=your_api_key_here
+OPEN_API_TOKEN=your_api_key_here
 ```
 
 ## Usage

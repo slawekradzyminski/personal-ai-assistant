@@ -10,16 +10,18 @@ def download_audio(yt_url: str, output_dir: str = "downloads") -> Optional[str]:
         
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(yt_url, download=True)
-            file_path = os.path.join(
-                output_dir,
-                f"{info['title']}-{info['id']}.mp3"
-            )
-            print(f'Download completed: {os.path.basename(file_path)}')
-            return file_path
+            filename = ydl.prepare_filename(info)
+            final_path = os.path.splitext(filename)[0] + '.mp3'
+            print(f'Download completed: {os.path.basename(final_path)}')
+            return final_path
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         return None
+
+def _to_camel_case(text: str) -> str:
+    words = re.sub(r'[^a-zA-Z0-9]', ' ', text).split()
+    return words[0].lower() + ''.join(word.title() for word in words[1:])
 
 def _get_ydl_options(output_dir: str) -> dict:
     return {
@@ -30,6 +32,7 @@ def _get_ydl_options(output_dir: str) -> dict:
             'preferredcodec': 'mp3',
         }],
         'progress_hooks': [_progress_hook],
+        'preprocess_filename': _to_camel_case,
     }
 
 def _progress_hook(d):

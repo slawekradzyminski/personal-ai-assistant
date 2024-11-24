@@ -3,7 +3,7 @@ from app.config import load_openai_api_key
 
 def test_load_openai_api_key_success(monkeypatch):
     # given
-    monkeypatch.setenv('OPENAI_API_KEY', 'test-key')
+    monkeypatch.setenv('OPEN_API_TOKEN', 'test-key')
     
     # when
     with pytest.MonkeyPatch.context() as m:
@@ -14,7 +14,7 @@ def test_load_openai_api_key_success(monkeypatch):
 
 def test_load_openai_api_key_missing(monkeypatch):
     # given
-    monkeypatch.delenv('OPENAI_API_KEY', raising=False)
+    monkeypatch.delenv('OPEN_API_TOKEN', raising=False)
     monkeypatch.setattr('dotenv.load_dotenv', lambda: None)
     monkeypatch.setattr('os.getenv', lambda key, default=None: None)
     
@@ -23,4 +23,4 @@ def test_load_openai_api_key_missing(monkeypatch):
         load_openai_api_key()
         
     # then
-    assert str(exc_info.value) == "Environment variable 'OPENAI_API_KEY' not found."
+    assert str(exc_info.value) == "Environment variable 'OPEN_API_TOKEN' not found."

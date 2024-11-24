@@ -11,10 +11,6 @@ from app.memory import (
     get_summary
 )
 
-@pytest.fixture(autouse=True)
-def mock_openai_api_key(monkeypatch):
-    monkeypatch.setenv('OPENAI_API_KEY', 'test-key')
-
 def test_is_uninformative():
     # given
     short_chunk = "hi"

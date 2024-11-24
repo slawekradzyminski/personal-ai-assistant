@@ -2,12 +2,14 @@ import os
 from dotenv import load_dotenv
 import tiktoken
 
+load_dotenv()
+
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
 def load_openai_api_key():
-    api_key = os.getenv('OPENAI_API_KEY')
+    api_key = os.getenv('OPEN_API_TOKEN')
     if not api_key:
-        raise ValueError("Environment variable 'OPENAI_API_KEY' not found.")
+        raise ValueError("Environment variable 'OPEN_API_TOKEN' not found.")
     return api_key
 
 class bcolors:
