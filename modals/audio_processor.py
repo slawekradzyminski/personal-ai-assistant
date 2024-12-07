@@ -1,5 +1,6 @@
 import os
 import tempfile
+import datetime
 
 import math
 from pydub import AudioSegment
@@ -41,8 +42,18 @@ def process_each_chunk_and_get_full_transcript(chunks, extension):
             transcript_chunk = api_get_transcript(temp_file.name)
             full_transcript += f" [Chunk {idx + 1}] " + transcript_chunk
 
+    _save_transcript_to_file(full_transcript)
     return full_transcript
 
+
+def _save_transcript_to_file(transcript):
+    downloads_path = "downloads"
+    os.makedirs(downloads_path, exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    transcript_file = os.path.join(downloads_path, f"transcript_{timestamp}.txt")
+    
+    with open(transcript_file, "w", encoding="utf-8") as f:
+        f.write(transcript)
 
 # https://github.com/jiaaro/pydub/issues/169
 def calculate_silence_thresh(dbfs):
